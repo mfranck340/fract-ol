@@ -12,8 +12,6 @@
 
 #include "../include/fract_ol.h"
 
-#define WIN_WIDTH 800
-#define WIN_HEIGHT 600
 #define SQUARE_SIZE 100
 
 void draw_square(void *mlx, void *win, int x_start, int y_start, int size, int color)
@@ -27,28 +25,41 @@ void draw_square(void *mlx, void *win, int x_start, int y_start, int size, int c
     }
 }
 
+int init_fractol(t_fractol **fractol)
+{
+    (*fractol) = malloc(sizeof(t_fractol));
+    if (!(*fractol))
+        return (0);
+    (*fractol)->mlx = mlx_init();
+    (*fractol)->win = mlx_new_window((*fractol)->mlx, WIN_WIDTH, WIN_HEIGHT, "FRACT-OL");
+    (*fractol)->img = mlx_new_image((*fractol)->mlx, WIN_WIDTH, WIN_HEIGHT);
+    (*fractol)->addr = mlx_get_data_addr((*fractol)->img, &(*fractol)->bpp, &(*fractol)->line_len, &(*fractol)->endian);
+    (*fractol)->width = WIN_WIDTH;
+    (*fractol)->height = WIN_HEIGHT;
+    (*fractol)->fract = 1;
+    (*fractol)->color = 0x000000;
+    (*fractol)->max_iter = 50;
+    (*fractol)->zoom = 1;
+    (*fractol)->x1 = -2.1;
+    (*fractol)->y1 = -1.2;
+    (*fractol)->x2 = 0.6;
+    (*fractol)->y2 = 1.2;
+    (*fractol)->c_r = 0;
+    (*fractol)->c_i = 0;
+    (*fractol)->z_r = 0;
+    (*fractol)->z_i = 0;
+    (*fractol)->tmp = 0;
+    return (1);
+}
+
 int main()
 {
-    void *mlx;
-    void *win;
+    t_fractol *fractol;
 
-	ft_printf("Hello World\n");
-    // Inicia la conexión con el servidor X y crea una ventana
-    mlx = mlx_init();
-    win = mlx_new_window(mlx, WIN_WIDTH, WIN_HEIGHT, "Cuadrado en el Centro");
-
-	ft_printf("Ventana creada\n");
-    // Calcula las coordenadas del centro para el cuadrado
-    int x_start = (WIN_WIDTH - SQUARE_SIZE) / 2;
-    int y_start = (WIN_HEIGHT - SQUARE_SIZE) / 2;
-
-	ft_printf("Coordenadas del centro calculadas\n");
-    // Dibuja el cuadrado en el centro de la ventana
-    draw_square(mlx, win, x_start, y_start, SQUARE_SIZE, 0x00FF00); // Color verde (0x00FF00)
-
-	ft_printf("Cuadrado dibujado\n");
-    // Mantén la ventana abierta hasta que el usuario la cierre
-    mlx_loop(mlx);
-	ft_printf("Fin del programa\n");
+    if (!init_fractol(&fractol))
+        return (1);
+    handle_events(fractol);
+    mlx_loop(fractol->mlx);
+    free(fractol);
     return 0;
 }

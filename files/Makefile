@@ -27,7 +27,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 HEADER = include/fract_ol.h
 #HEADER_BONUS = include/push_swap_bonus.h
-SRCS = src/fract_ol.c
+SRCS = src/fract_ol.c src/handle_events.c
 OBJS = $(SRCS:.c=.o)
 #SRCS_BONUS = src_bonus/checker_bonus.c src_bonus/push_bonus.c \
 			src_bonus/swap_bonus.c src_bonus/rotate_bonus.c \
@@ -40,7 +40,7 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX) $(MLX_FLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 
 #bonus: $(NAME_BONUS)
 
@@ -61,7 +61,6 @@ $(LIBFT):
 
 $(MLX):
 	$(MAKE) -C $(MLX_DIR)
-	cp $(MLX_DIR)/$(MLX) $(MLX)
 
 clean:
 	$(RM) $(OBJS) $(OBJS_BONUS)
@@ -69,7 +68,7 @@ clean:
 	$(MAKE) -C $(MLX_DIR) clean
 
 fclean: clean
-	$(RM) $(NAME) $(NAME_BONUS) $(LIBFT) $(MLX)
+	$(RM) $(NAME) $(NAME_BONUS) $(LIBFT)
 	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
