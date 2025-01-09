@@ -12,54 +12,79 @@
 
 #include "../include/fract_ol.h"
 
-#define SQUARE_SIZE 100
+#include <math.h>
 
-void draw_square(void *mlx, void *win, int x_start, int y_start, int size, int color)
+int	init_custom_fractol(t_fractol **fractol, char *fract)
 {
-    for (int y = y_start; y < y_start + size; y++)
-    {
-        for (int x = x_start; x < x_start + size; x++)
-        {
-            mlx_pixel_put(mlx, win, x, y, color);
-        }
-    }
+	if (ft_strncmp(fract, "mandelbrot\0", 11) == 0)
+	{
+		(*fractol)->fract = 'm';
+		(*fractol)->c_r = 0;
+		(*fractol)->c_i = 0;
+		(*fractol)->offset_x = -0.7;
+		(*fractol)->offset_y = 0;
+	}
+	else if (ft_strncmp(fract, "julia\0", 6) == 0)
+	{
+		(*fractol)->fract = 'j';
+		(*fractol)->c_r = 0.285;
+		(*fractol)->c_i = -0.01;
+		(*fractol)->offset_x = 0;
+		(*fractol)->offset_y = 0;
+	}
+	else if (ft_strncmp(fract, "nova\0", 5) == 0)
+	{
+		(*fractol)->fract = 'n';
+		(*fractol)->c_r = -1;
+		(*fractol)->c_i = 0;
+		(*fractol)->offset_x = 0;
+		(*fractol)->offset_y = 0;
+	}
+	else
+	{
+		free(*fractol);
+		ft_printf(MSG_USAGE);
+		return (0);
+	}
+	return (1);
 }
 
-int init_fractol(t_fractol **fractol)
+int init_fractol(t_fractol **fractol, char *fract)
 {
-    (*fractol) = malloc(sizeof(t_fractol));
-    if (!(*fractol))
-        return (0);
-    (*fractol)->mlx = mlx_init();
-    (*fractol)->win = mlx_new_window((*fractol)->mlx, WIN_WIDTH, WIN_HEIGHT, "FRACT-OL");
-    (*fractol)->img = mlx_new_image((*fractol)->mlx, WIN_WIDTH, WIN_HEIGHT);
-    (*fractol)->addr = mlx_get_data_addr((*fractol)->img, &(*fractol)->bpp, &(*fractol)->line_len, &(*fractol)->endian);
-    (*fractol)->width = WIN_WIDTH;
-    (*fractol)->height = WIN_HEIGHT;
-    (*fractol)->fract = 1;
-    (*fractol)->color = 0x000000;
-    (*fractol)->max_iter = 50;
-    (*fractol)->zoom = 1;
-    (*fractol)->x1 = -2.1;
-    (*fractol)->y1 = -1.2;
-    (*fractol)->x2 = 0.6;
-    (*fractol)->y2 = 1.2;
-    (*fractol)->c_r = 0;
-    (*fractol)->c_i = 0;
-    (*fractol)->z_r = 0;
-    (*fractol)->z_i = 0;
-    (*fractol)->tmp = 0;
-    return (1);
+	(*fractol) = malloc(sizeof(t_fractol));
+	if (!(*fractol))
+		return (0);
+	if (!init_custom_fractol(fractol, fract))
+		return (0);
+	(*fractol)->mlx = mlx_init();
+	(*fractol)->win = mlx_new_window((*fractol)->mlx, WIN_WIDTH, WIN_HEIGHT, "FRACT-OL");
+	(*fractol)->img = mlx_new_image((*fractol)->mlx, WIN_WIDTH, WIN_HEIGHT);
+	(*fractol)->addr = mlx_get_data_addr((*fractol)->img, &(*fractol)->bpp, &(*fractol)->line_len, &(*fractol)->endian);
+	(*fractol)->color = 0x000000;
+	(*fractol)->max_iter = 8;
+	(*fractol)->zoom = 3;
+	(*fractol)->x = 0;
+	(*fractol)->y = 0;
+	(*fractol)->z_r = 0;
+	(*fractol)->z_i = 0;
+	return (1);
 }
 
-int main()
-{
-    t_fractol *fractol;
 
-    if (!init_fractol(&fractol))
-        return (1);
-    handle_events(fractol);
-    mlx_loop(fractol->mlx);
-    free(fractol);
-    return 0;
+int main(int argc, char **argv)
+{
+	t_fractol *fractol;
+
+	if (argc != 2)
+	{
+		ft_printf(MSG_USAGE);
+		return (1);
+	}
+	if (!init_fractol(&fractol, argv[1]))
+		return (1);
+	draw_fractal(fractol);
+	handle_events(fractol);
+	mlx_loop(fractol->mlx);
+	free(fractol);
+	return 0;
 }

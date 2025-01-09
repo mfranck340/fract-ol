@@ -16,40 +16,48 @@
 # include "../libft/libft.h"
 # include "../minilibx-linux/mlx.h"
 
-# define WIN_WIDTH 1500
-# define WIN_HEIGHT 600
+# define MSG_USAGE "Usage:\t./fract_ol [mandelbrot / julia / nova]\n"
+
+# define WIN_WIDTH 800
+# define WIN_HEIGHT 800
 
 # define ESC_KEY 65307
 # define UP_KEY 65362
+# define DOWN_KEY 65364
+# define LEFT_KEY 65361
+# define RIGHT_KEY 65363
+
 # define SCROLL_UP 4
 # define SCROLL_DOWN 5
 
 typedef struct s_fractol
 {
-    void	*mlx;
-    void	*win;
-    void	*img;
-    char	*addr;
-    int		bpp;
-    int		line_len;
-    int		endian;
-    int		width;
-    int		height;
-    int		fract;
-    int		color;
-    int		max_iter;
-    double	zoom;
-    double	x1;
-    double	y1;
-    double	x2;
-    double	y2;
-    double	c_r;
-    double	c_i;
-    double	z_r;
-    double	z_i;
-    double	tmp;
+	char	fract;
+	void	*mlx;
+	void	*win;
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+	int		color;
+	int		max_iter;
+	double	zoom;
+	int     x;
+	int     y;
+	double	c_r;
+	double	c_i;
+	double	z_r;
+	double	z_i;
+	double	offset_x;
+	double	offset_y;
 }	t_fractol;
 
-void handle_events(t_fractol *fractol);
+void	handle_events(t_fractol *fractol);
+void	draw_fractal(t_fractol *fractol);
+void	put_color_to_pixel(int i, t_fractol *fractol);
+void	review_arrow_keys(int keycode, t_fractol *fractol);
+void	recalculate_offset(int x, int y, double zoom_factor, t_fractol *fractol);
+void	do_op_nova(t_fractol *fractol);
 
 #endif

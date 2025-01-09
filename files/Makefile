@@ -27,7 +27,8 @@ CFLAGS = -Wall -Wextra -Werror
 
 HEADER = include/fract_ol.h
 #HEADER_BONUS = include/push_swap_bonus.h
-SRCS = src/fract_ol.c src/handle_events.c
+SRCS = src/fract_ol.c src/handle_events.c src/fractals.c src/color.c \
+		src/events_bonus.c src/fractal_bonus.c
 OBJS = $(SRCS:.c=.o)
 #SRCS_BONUS = src_bonus/checker_bonus.c src_bonus/push_bonus.c \
 			src_bonus/swap_bonus.c src_bonus/rotate_bonus.c \
