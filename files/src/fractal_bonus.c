@@ -12,16 +12,42 @@
 
 #include "../include/fract_ol.h"
 
+void	function_nova(double *p, t_fractol *fractol)
+{
+	p[0] = (fractol->z_r * fractol->z_r * fractol->z_r) - (3 * fractol->z_r
+				* fractol->z_i * fractol->z_i) - 1;
+	p[1] = (3 * fractol->z_r * fractol->z_r * fractol->z_i) - (fractol->z_i
+			* fractol->z_i * fractol->z_i);
+}
+
+void	derivative_nova(double *dp, t_fractol *fractol)
+{
+	dp[0] = (3 * fractol->z_r * fractol->z_r) - (3 * fractol->z_i
+				* fractol->z_i);
+	dp[1] = 6 * fractol->z_r * fractol->z_i;
+}
+
+void	update_nova(double *p, double *dp, double mod_squared, t_fractol *fractol)
+{
+	double	tmp;
+	double	a;
+
+	a = 1;
+	tmp = fractol->z_i - a * ((p[1] * dp[0] - p[0] * dp[1]) / mod_squared)
+			+ fractol->c_i;
+	fractol->z_r = fractol->z_r - a * ((p[0] * dp[0] + p[1] * dp[1]) / mod_squared)
+		+ fractol->c_r;
+	fractol->z_i = tmp;
+}
+
 void	do_op_nova(t_fractol *fractol)
 {
 	int		i;
-	double	p_r, p_i, dp_r, dp_i;
-	double	resul_r, resul_i;
+	double	p[2];
+	double	dp[2];
 	double	mod_squared;
-	double	a;
 
 	i = 0;
-	a = 0.5;
 	fractol->z_r = (fractol->x - WIN_WIDTH / 2.0) * fractol->zoom / WIN_WIDTH
 		+ fractol->offset_x;
 	fractol->z_i = (fractol->y - WIN_HEIGHT / 2.0) * fractol->zoom / WIN_HEIGHT
@@ -29,22 +55,12 @@ void	do_op_nova(t_fractol *fractol)
 	while (i < fractol->max_iter && (fractol->z_r * fractol->z_r + fractol->z_i
 			* fractol->z_i) < 4)
 	{
-		p_r = (fractol->z_r * fractol->z_r * fractol->z_r) - (3 * fractol->z_r
-				* fractol->z_i * fractol->z_i) - 1;
-		p_i = (3 * fractol->z_r * fractol->z_r * fractol->z_i) - (fractol->z_i
-				* fractol->z_i * fractol->z_i);
-		dp_r = (3 * fractol->z_r * fractol->z_r) - (3 * fractol->z_i
-				* fractol->z_i);
-		dp_i = 6 * fractol->z_r * fractol->z_i;
-		mod_squared = dp_r * dp_r + dp_i * dp_i;
+		function_nova(p, fractol);
+		derivative_nova(dp, fractol);
+		mod_squared = dp[0] * dp[0] + dp[1] * dp[1];
 		if (mod_squared < 1e-12)
 			break ;
-		resul_r = fractol->z_r - a * ((p_r * dp_r + p_i * dp_i) / mod_squared)
-			+ fractol->c_r;
-		resul_i = fractol->z_i - a * ((p_i * dp_r - p_r * dp_i) / mod_squared)
-			+ fractol->c_i;
-		fractol->z_r = resul_r;
-		fractol->z_i = resul_i;
+		update_nova(p, dp, mod_squared, fractol);
 		i++;
 	}
 	put_color_to_pixel(i, fractol);

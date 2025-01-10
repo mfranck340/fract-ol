@@ -44,7 +44,6 @@ int	mouse_hook(int button, int x, int y, t_fractol *fractol)
 		fractol->zoom *= zoom_factor;
 		recalculate_offset(x, y, zoom_factor, fractol);
 	}
-	fractol->c_r += 0.1;
 	draw_fractal(fractol);
 	return (0);
 }
@@ -54,4 +53,5 @@ void	handle_events(t_fractol *fractol)
 	mlx_key_hook(fractol->win, key_hook, fractol);
 	mlx_hook(fractol->win, 17, 0, close_window, fractol);
 	mlx_mouse_hook(fractol->win, mouse_hook, fractol);
+	mlx_hook(fractol->win, 6, 1L << 6, mousemove_event, fractol);
 }

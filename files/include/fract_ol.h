@@ -26,6 +26,8 @@
 # define DOWN_KEY 65364
 # define LEFT_KEY 65361
 # define RIGHT_KEY 65363
+# define SPACE_KEY 32
+# define SHIFT_KEY 65505
 
 # define SCROLL_UP 4
 # define SCROLL_DOWN 5
@@ -33,6 +35,7 @@
 typedef struct s_fractol
 {
 	char	fract;
+	char	lock;
 	void	*mlx;
 	void	*win;
 	void	*img;
@@ -59,6 +62,7 @@ void	put_color_to_pixel(int i, t_fractol *fractol);
 void	review_arrow_keys(int keycode, t_fractol *fractol);
 void	recalculate_offset(int x, int y, double zoom_factor,
 			t_fractol *fractol);
+int		mousemove_event(int x, int y, t_fractol *fractol);
 void	do_op_nova(t_fractol *fractol);
 
 #endif

@@ -12,15 +12,15 @@
 
 #include "../include/fract_ol.h"
 
-int	get_color(int i)
+int	get_color(int i, int color)
 {
 	int	red;
 	int	green;
 	int	blue;
 
-	red = (i * 13 % 256);
-	green = ((i * i * 7) % 256);
-	blue = ((i * 17 + 128) % 256);
+	red = (i * (color >> 16 & 0xFF) % 256);
+	green = ((i * i * (color >> 8 & 0xFF)) % 256);
+	blue = ((i * 17 + (color & 0xFF)) % 256);
 	return ((red << 16) | (green << 8) | blue);
 }
 
@@ -38,5 +38,5 @@ void	put_color_to_pixel(int i, t_fractol *fractol)
 	if (i == fractol->max_iter)
 		put_pixel_color(fractol, fractol->x, fractol->y, 0x000000);
 	else
-		put_pixel_color(fractol, fractol->x, fractol->y, get_color(i));
+		put_pixel_color(fractol, fractol->x, fractol->y, get_color(i, fractol->color));
 }

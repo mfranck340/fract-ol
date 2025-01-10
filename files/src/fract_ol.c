@@ -12,15 +12,11 @@
 
 #include "../include/fract_ol.h"
 
-#include <math.h>
-
 int	init_custom_fractol(t_fractol **fractol, char *fract)
 {
 	if (ft_strncmp(fract, "mandelbrot\0", 11) == 0)
 	{
 		(*fractol)->fract = 'm';
-		(*fractol)->c_r = 0;
-		(*fractol)->c_i = 0;
 		(*fractol)->offset_x = -0.7;
 		(*fractol)->offset_y = 0;
 	}
@@ -29,17 +25,9 @@ int	init_custom_fractol(t_fractol **fractol, char *fract)
 		(*fractol)->fract = 'j';
 		(*fractol)->c_r = 0.285;
 		(*fractol)->c_i = -0.01;
-		(*fractol)->offset_x = 0;
-		(*fractol)->offset_y = 0;
 	}
 	else if (ft_strncmp(fract, "nova\0", 5) == 0)
-	{
 		(*fractol)->fract = 'n';
-		(*fractol)->c_r = -1;
-		(*fractol)->c_i = 0;
-		(*fractol)->offset_x = 0;
-		(*fractol)->offset_y = 0;
-	}
 	else
 	{
 		free(*fractol);
@@ -54,16 +42,21 @@ int	init_fractol(t_fractol **fractol, char *fract)
 	(*fractol) = malloc(sizeof(t_fractol));
 	if (!(*fractol))
 		return (0);
+	(*fractol)->c_r = 0;
+	(*fractol)->c_i = 0;
+	(*fractol)->offset_x = 0;
+	(*fractol)->offset_y = 0;
 	if (!init_custom_fractol(fractol, fract))
 		return (0);
+	(*fractol)->lock = 'Y';
 	(*fractol)->mlx = mlx_init();
 	(*fractol)->win = mlx_new_window((*fractol)->mlx, WIN_WIDTH, WIN_HEIGHT,
 			"FRACT-OL");
 	(*fractol)->img = mlx_new_image((*fractol)->mlx, WIN_WIDTH, WIN_HEIGHT);
 	(*fractol)->addr = mlx_get_data_addr((*fractol)->img, &(*fractol)->bpp,
 			&(*fractol)->line_len, &(*fractol)->endian);
-	(*fractol)->color = 0x000000;
-	(*fractol)->max_iter = 8;
+	(*fractol)->color = 0x0D3180;
+	(*fractol)->max_iter = 64;
 	(*fractol)->zoom = 3;
 	(*fractol)->x = 0;
 	(*fractol)->y = 0;

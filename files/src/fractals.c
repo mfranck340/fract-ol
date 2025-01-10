@@ -77,5 +77,4 @@ void	draw_fractal(t_fractol *fractol)
 		fractol->x++;
 	}
 	mlx_put_image_to_window(fractol->mlx, fractol->win, fractol->img, 0, 0);
-	ft_printf("Press ESC to exit\n");
 }
