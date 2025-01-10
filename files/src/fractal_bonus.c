@@ -15,7 +15,7 @@
 void	function_nova(double *p, t_fractol *fractol)
 {
 	p[0] = (fractol->z_r * fractol->z_r * fractol->z_r) - (3 * fractol->z_r
-				* fractol->z_i * fractol->z_i) - 1;
+			* fractol->z_i * fractol->z_i) - 1;
 	p[1] = (3 * fractol->z_r * fractol->z_r * fractol->z_i) - (fractol->z_i
 			* fractol->z_i * fractol->z_i);
 }
@@ -23,20 +23,21 @@ void	function_nova(double *p, t_fractol *fractol)
 void	derivative_nova(double *dp, t_fractol *fractol)
 {
 	dp[0] = (3 * fractol->z_r * fractol->z_r) - (3 * fractol->z_i
-				* fractol->z_i);
+			* fractol->z_i);
 	dp[1] = 6 * fractol->z_r * fractol->z_i;
 }
 
-void	update_nova(double *p, double *dp, double mod_squared, t_fractol *fractol)
+void	update_nova(double *p, double *dp, double mod_squared,
+	t_fractol *fractol)
 {
 	double	tmp;
 	double	a;
 
 	a = 1;
 	tmp = fractol->z_i - a * ((p[1] * dp[0] - p[0] * dp[1]) / mod_squared)
-			+ fractol->c_i;
-	fractol->z_r = fractol->z_r - a * ((p[0] * dp[0] + p[1] * dp[1]) / mod_squared)
-		+ fractol->c_r;
+		+ fractol->c_i;
+	fractol->z_r = fractol->z_r - a * ((p[0] * dp[0] + p[1] * dp[1])
+			/ mod_squared) + fractol->c_r;
 	fractol->z_i = tmp;
 }
 

@@ -56,7 +56,7 @@ int	init_fractol(t_fractol **fractol, char *fract)
 	(*fractol)->addr = mlx_get_data_addr((*fractol)->img, &(*fractol)->bpp,
 			&(*fractol)->line_len, &(*fractol)->endian);
 	(*fractol)->color = 0x0D3180;
-	(*fractol)->max_iter = 64;
+	(*fractol)->max_iter = 128;
 	(*fractol)->zoom = 3;
 	(*fractol)->x = 0;
 	(*fractol)->y = 0;

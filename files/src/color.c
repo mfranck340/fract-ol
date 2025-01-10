@@ -38,5 +38,6 @@ void	put_color_to_pixel(int i, t_fractol *fractol)
 	if (i == fractol->max_iter)
 		put_pixel_color(fractol, fractol->x, fractol->y, 0x000000);
 	else
-		put_pixel_color(fractol, fractol->x, fractol->y, get_color(i, fractol->color));
+		put_pixel_color(fractol, fractol->x, fractol->y,
+			get_color(i, fractol->color));
 }

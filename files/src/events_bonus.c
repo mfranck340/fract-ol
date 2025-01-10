@@ -37,6 +37,7 @@ void	review_arrow_keys(int keycode, t_fractol *fractol)
 	else if (keycode == SHIFT_KEY)
 		change_color(fractol);
 	else if (keycode == SPACE_KEY)
+	{
 		if (fractol->lock == 'Y')
 			fractol->lock = 'N';
 		else
@@ -44,6 +45,7 @@ void	review_arrow_keys(int keycode, t_fractol *fractol)
 			fractol->lock = 'Y';
 			fractol->max_iter = 128;
 		}
+	}
 	else
 		return ;
 	draw_fractal(fractol);
