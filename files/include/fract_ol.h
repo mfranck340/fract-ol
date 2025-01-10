@@ -43,8 +43,8 @@ typedef struct s_fractol
 	int		color;
 	int		max_iter;
 	double	zoom;
-	int     x;
-	int     y;
+	int		x;
+	int		y;
 	double	c_r;
 	double	c_i;
 	double	z_r;
@@ -57,7 +57,8 @@ void	handle_events(t_fractol *fractol);
 void	draw_fractal(t_fractol *fractol);
 void	put_color_to_pixel(int i, t_fractol *fractol);
 void	review_arrow_keys(int keycode, t_fractol *fractol);
-void	recalculate_offset(int x, int y, double zoom_factor, t_fractol *fractol);
+void	recalculate_offset(int x, int y, double zoom_factor,
+			t_fractol *fractol);
 void	do_op_nova(t_fractol *fractol);
 
 #endif

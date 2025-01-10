@@ -49,7 +49,7 @@ int	init_custom_fractol(t_fractol **fractol, char *fract)
 	return (1);
 }
 
-int init_fractol(t_fractol **fractol, char *fract)
+int	init_fractol(t_fractol **fractol, char *fract)
 {
 	(*fractol) = malloc(sizeof(t_fractol));
 	if (!(*fractol))
@@ -57,9 +57,11 @@ int init_fractol(t_fractol **fractol, char *fract)
 	if (!init_custom_fractol(fractol, fract))
 		return (0);
 	(*fractol)->mlx = mlx_init();
-	(*fractol)->win = mlx_new_window((*fractol)->mlx, WIN_WIDTH, WIN_HEIGHT, "FRACT-OL");
+	(*fractol)->win = mlx_new_window((*fractol)->mlx, WIN_WIDTH, WIN_HEIGHT,
+			"FRACT-OL");
 	(*fractol)->img = mlx_new_image((*fractol)->mlx, WIN_WIDTH, WIN_HEIGHT);
-	(*fractol)->addr = mlx_get_data_addr((*fractol)->img, &(*fractol)->bpp, &(*fractol)->line_len, &(*fractol)->endian);
+	(*fractol)->addr = mlx_get_data_addr((*fractol)->img, &(*fractol)->bpp,
+			&(*fractol)->line_len, &(*fractol)->endian);
 	(*fractol)->color = 0x000000;
 	(*fractol)->max_iter = 8;
 	(*fractol)->zoom = 3;
@@ -70,10 +72,9 @@ int init_fractol(t_fractol **fractol, char *fract)
 	return (1);
 }
 
-
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_fractol *fractol;
+	t_fractol	*fractol;
 
 	if (argc != 2)
 	{
@@ -86,5 +87,5 @@ int main(int argc, char **argv)
 	handle_events(fractol);
 	mlx_loop(fractol->mlx);
 	free(fractol);
-	return 0;
+	return (0);
 }
