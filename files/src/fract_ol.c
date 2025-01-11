@@ -12,21 +12,21 @@
 
 #include "../include/fract_ol.h"
 
-int	init_custom_fractol(t_fractol **fractol, char *fract)
+int	init_custom_fractol(t_fractol **fractol, int argc, char **argv)
 {
-	if (ft_strncmp(fract, "mandelbrot\0", 11) == 0)
+	if (ft_strncmp(argv[1], "mandelbrot\0", 11) == 0 && argc == 2)
 	{
 		(*fractol)->fract = 'm';
 		(*fractol)->offset_x = -0.7;
 		(*fractol)->offset_y = 0;
 	}
-	else if (ft_strncmp(fract, "julia\0", 6) == 0)
+	else if (ft_strncmp(argv[1], "julia\0", 6) == 0 && argc == 4)
 	{
 		(*fractol)->fract = 'j';
-		(*fractol)->c_r = 0.285;
-		(*fractol)->c_i = -0.01;
+		if (!double_to_julia(fractol, argv))
+			return (0);
 	}
-	else if (ft_strncmp(fract, "nova\0", 5) == 0)
+	else if (ft_strncmp(argv[1], "nova\0", 5) == 0 && argc == 2)
 		(*fractol)->fract = 'n';
 	else
 	{
@@ -37,7 +37,7 @@ int	init_custom_fractol(t_fractol **fractol, char *fract)
 	return (1);
 }
 
-int	init_fractol(t_fractol **fractol, char *fract)
+int	init_fractol(t_fractol **fractol, int argc, char **argv)
 {
 	(*fractol) = malloc(sizeof(t_fractol));
 	if (!(*fractol))
@@ -46,7 +46,7 @@ int	init_fractol(t_fractol **fractol, char *fract)
 	(*fractol)->c_i = 0;
 	(*fractol)->offset_x = 0;
 	(*fractol)->offset_y = 0;
-	if (!init_custom_fractol(fractol, fract))
+	if (!init_custom_fractol(fractol, argc, argv))
 		return (0);
 	(*fractol)->lock = 'Y';
 	(*fractol)->mlx = mlx_init();
@@ -56,7 +56,7 @@ int	init_fractol(t_fractol **fractol, char *fract)
 	(*fractol)->addr = mlx_get_data_addr((*fractol)->img, &(*fractol)->bpp,
 			&(*fractol)->line_len, &(*fractol)->endian);
 	(*fractol)->color = 0x0D3180;
-	(*fractol)->max_iter = 128;
+	(*fractol)->max_iter = MAX_ITER;
 	(*fractol)->zoom = 3;
 	(*fractol)->x = 0;
 	(*fractol)->y = 0;
@@ -69,12 +69,12 @@ int	main(int argc, char **argv)
 {
 	t_fractol	*fractol;
 
-	if (argc != 2)
+	if (argc != 2 && argc != 4)
 	{
 		ft_printf(MSG_USAGE);
 		return (1);
 	}
-	if (!init_fractol(&fractol, argv[1]))
+	if (!init_fractol(&fractol, argc, argv))
 		return (1);
 	draw_fractal(fractol);
 	handle_events(fractol);

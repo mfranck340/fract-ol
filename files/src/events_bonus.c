@@ -43,7 +43,7 @@ void	review_arrow_keys(int keycode, t_fractol *fractol)
 		else
 		{
 			fractol->lock = 'Y';
-			fractol->max_iter = 128;
+			fractol->max_iter = MAX_ITER;
 		}
 	}
 	else
@@ -71,13 +71,13 @@ int	mousemove_event(int x, int y, t_fractol *fractol)
 		{
 			fractol->c_r = 4 * ((double)x / WIN_WIDTH) - 2;
 			fractol->c_i = 4 * ((double)y / WIN_HEIGHT) - 2;
-			fractol->max_iter = 8;
+			fractol->max_iter = MIN_ITER;
 			draw_fractal(fractol);
 		}
 		else if (fractol->fract == 'n')
 		{
 			fractol->c_r = 3.0 * ((double)x / WIN_WIDTH) - 1.5;
-			fractol->max_iter = 4;
+			fractol->max_iter = MIN_ITER;
 			draw_fractal(fractol);
 		}
 	}

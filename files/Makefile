@@ -11,7 +11,6 @@
 # **************************************************************************** #
 
 NAME = fractol
-#NAME_BONUS = checker
 
 LIBFT = libft.a
 LIBFT_DIR = libft
@@ -26,35 +25,17 @@ RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror
 
 HEADER = include/fract_ol.h
-#HEADER_BONUS = include/push_swap_bonus.h
 SRCS = src/fract_ol.c src/handle_events.c src/fractals.c src/color.c \
-		src/events_bonus.c src/fractal_bonus.c
+		src/events_bonus.c src/fractal_bonus.c src/parse_double.c
 OBJS = $(SRCS:.c=.o)
-#SRCS_BONUS = src_bonus/checker_bonus.c src_bonus/push_bonus.c \
-			src_bonus/swap_bonus.c src_bonus/rotate_bonus.c \
-			src_bonus/reverse_rotate_bonus.c src_bonus/init_stacks_bonus.c \
-			src_bonus/swap_utils_bonus.c src_bonus/verify_input_bonus.c \
-			src_bonus/verify_input_aux_bonus.c \
-			src_bonus/get_next_line_bonus.c
-#OBJS_BONUS = $(SRCS_BONUS:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 
-#bonus: $(NAME_BONUS)
-
-#$(NAME_BONUS): $(OBJS_BONUS)
-#	$(MAKE) -C libft
-#	cp libft/libft.a libft.a
-#	$(CC) $(CFLAGS) -o $(NAME_BONUS) $(OBJS_BONUS) libft.a
-
 src/%.o: src/%.c $(HEADER)
 	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
-
-#src_bonus/%.o: src_bonus/%.c $(HEADER_BONUS)
-#	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)

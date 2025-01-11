@@ -13,13 +13,18 @@
 #ifndef FRACT_OL_H
 # define FRACT_OL_H
 
+# include <math.h>
+
 # include "../libft/libft.h"
 # include "../minilibx-linux/mlx.h"
 
-# define MSG_USAGE "Usage:\t./fract_ol [mandelbrot / julia / nova]\n"
+# define MSG_USAGE "Usage:\t./fract_ol <mandelbrot> \n\t./fract_ol <julia> \
+<c_r> <c_i>\n\t./fract_ol <nova>\n"
 
 # define WIN_WIDTH 800
 # define WIN_HEIGHT 800
+# define MAX_ITER 100
+# define MIN_ITER 8
 
 # define ESC_KEY 65307
 # define UP_KEY 65362
@@ -64,5 +69,6 @@ void	recalculate_offset(int x, int y, double zoom_factor,
 			t_fractol *fractol);
 int		mousemove_event(int x, int y, t_fractol *fractol);
 void	do_op_nova(t_fractol *fractol);
+int		double_to_julia(t_fractol **fractol, char **argv);
 
 #endif
